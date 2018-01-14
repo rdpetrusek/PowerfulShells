@@ -1,5 +1,5 @@
 #example WriteMessageToMSMQTrans "FormatName:DIRECT=OS:{_server_name_}\private$\{_queue_name_}" "<messagebody></messagebody>" "message label!"
-
+[Reflection.Assembly]::LoadWithPartialName("System.Messaging")
 
 function WriteMessageToMSMQTrans($queueName, $message, $label)
   {
