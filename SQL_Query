@@ -1,0 +1,25 @@
+
+
+function Get-SQLRows{
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$True, HelpMessage='Server')]
+        [string]$serverName,
+        [Parameter(Mandatory=$True, HelpMessage='Database')]
+        [string]$databaseName,
+        [Parameter(Mandatory=$True, HelpMessage='Query')]
+        [string]$query
+    )
+    process {
+        $connectionString = "Server=$serverName;Database=$databaseName;Integrated Security=true;"
+        $connection = New-Object System.Data.SqlClient.SqlConnection
+        $connection.ConnectionString = $connectionString
+        $connection.Open()
+        $command = $connection.CreateCommand()
+        $command.CommandText = $query
+        $result = $command.ExecuteReader()
+        $table = new-object "System.Data.DataTable"
+        $table.Load($result)
+        $connection.Close()
+        return $table.Rows
+    }
